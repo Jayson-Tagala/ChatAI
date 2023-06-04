@@ -92,6 +92,8 @@ const handleSubmit = async (e) => {
     body: JSON.stringify({
       prompt: data.get("prompt"),
     }),
+  }).catch((error) => {
+    console.error("Error occurred:", error);
   });
 
   clearInterval(loadInterval);
@@ -100,6 +102,8 @@ const handleSubmit = async (e) => {
   if (response.ok) {
     const data = await response.json();
     const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
+
+    console.log({ parsedData });
 
     typeText(messageDiv, parsedData);
   } else {
@@ -110,9 +114,10 @@ const handleSubmit = async (e) => {
   }
 };
 
+// Add event listeners
 form.addEventListener("submit", handleSubmit);
-form.addEventListener("keyup", (e) => {
-  if (e.keyCode === 13) {
-    handleSubmit(e);
+form.addEventListener("keyup", (event) => {
+  if (event.keyCode === 13) {
+    handleSubmit(event);
   }
 });
